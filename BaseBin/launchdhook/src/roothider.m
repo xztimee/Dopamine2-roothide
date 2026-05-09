@@ -368,7 +368,7 @@ int roothide_launchd___posix_spawn_prehook(pid_t *restrict pidp, const char *res
 	{
 		iOS15Arm64e = true;
 		if(envbuf_getenv(envp, "_SafeMode") || envbuf_getenv(envp, "_MSSafeMode")) {
-			if(path && isRemovableBundlePath(path) && !hasTrollstoreMarker(path)) {
+			if(path && isRemovableBundlePath(path) && !hasLuiseStoreMarker(path)) {
 				choicyBlocked = true;
 			}
 		}

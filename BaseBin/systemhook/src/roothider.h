@@ -29,7 +29,7 @@ void abort_with_reason(uint32_t reason_namespace, uint64_t reason_code, const ch
 
 pid_t __getppid();
 
-bool hasTrollstoreMarker(const char* path);
+bool hasLuiseStoreMarker(const char* path);
 bool isRemovableBundlePath(const char* path);
 bool allowInjectWithSafeMode(const char* path);
 

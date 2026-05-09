@@ -66,18 +66,18 @@ bool isRemovableBundlePath(const char* path)
 	return true;
 }
 
-bool hasTrollstoreMarker(const char* path)
+bool hasLuiseStoreMarker(const char* path)
 {
     char* uuidpath = getAppUUIDPath(path);
 	if(!uuidpath) return false;
 
 	char* markerpath=NULL;
-	asprintf(&markerpath, "%s/_TrollStore", uuidpath);
+	asprintf(&markerpath, "%s/_LuiseStore", uuidpath);
 
 	int ret = access(markerpath, F_OK);
     if(ret != 0) {
         free((void*)markerpath); markerpath = NULL;
-        asprintf(&markerpath, "%s/_TrollStoreLite", uuidpath);
+        asprintf(&markerpath, "%s/_LuiseStoreLite", uuidpath);
         ret = access(markerpath, F_OK);
     }
 
@@ -97,8 +97,8 @@ bool allowInjectWithSafeMode(const char* path)
 
 	if(isRemovableBundlePath(path))
 	{
-		if(hasTrollstoreMarker(path)) {
-			//always inject into trollstored apps unless we blacklist it in roothide manager
+		if(hasLuiseStoreMarker(path)) {
+			//always inject into LuiseStored apps unless we blacklist it in roothide manager
 			return true;
 		} else {
 			return false;

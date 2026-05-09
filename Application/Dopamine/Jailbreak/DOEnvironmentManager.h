@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)appVersionDisplayString;
 - (NSString *)nightlyHash;
 
-- (BOOL)isInstalledThroughTrollStore;
+- (BOOL)isInstalledThroughLuiseStore;
 - (BOOL)isJailbroken;
 - (BOOL)isBootstrapped;
 - (NSString *)jailbrokenVersion;

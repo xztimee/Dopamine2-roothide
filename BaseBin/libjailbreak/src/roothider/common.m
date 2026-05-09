@@ -301,18 +301,18 @@ bool isRemovableBundlePath(const char* path)
 	return true;
 }
 
-bool hasTrollstoreMarker(const char* path)
+bool hasLuiseStoreMarker(const char* path)
 {
     char* uuidpath = getAppUUIDPath(path);
 	if(!uuidpath) return false;
 
 	char* markerpath=NULL;
-	asprintf(&markerpath, "%s/_TrollStore", uuidpath);
+	asprintf(&markerpath, "%s/_LuiseStore", uuidpath);
 
 	int ret = access(markerpath, F_OK);
     if(ret != 0) {
         free((void*)markerpath); markerpath = NULL;
-        asprintf(&markerpath, "%s/_TrollStoreLite", uuidpath);
+        asprintf(&markerpath, "%s/_LuiseStoreLite", uuidpath);
         ret = access(markerpath, F_OK);
     }
 
@@ -322,13 +322,13 @@ bool hasTrollstoreMarker(const char* path)
 	return ret==0;
 }
 
-bool hasTrollstoreLiteMarker(const char* path)
+bool hasLuiseStoreLiteMarker(const char* path)
 {
     char* uuidpath = getAppUUIDPath(path);
 	if(!uuidpath) return false;
 
 	char* markerpath=NULL;
-	asprintf(&markerpath, "%s/_TrollStoreLite", uuidpath);
+	asprintf(&markerpath, "%s/_LuiseStoreLite", uuidpath);
 
 	int ret = access(markerpath, F_OK);
 
@@ -701,8 +701,8 @@ int exec_cmd_roothide_spawn(pid_t* pidp, const char* path, const posix_spawn_fil
     /* if systemhook has been loaded into the current process, 
         it means posix_spawn has been hooked and we can skip patching. */
         need_patch_child = false;
-    } else if(argc==3 && strcmp(argv[1],"trollstore")==0 && strcmp(argv[2],"delete-bootstrap")==0) {
-        // skip patching for trollstore bootstrap delete
+    } else if(argc==3 && strcmp(argv[1],"luisestore")==0 && strcmp(argv[2],"delete-bootstrap")==0) {
+        // skip patching for luisestore bootstrap delete
         need_patch_child = false;
     }
 
@@ -814,8 +814,8 @@ void loadAppStoredIdentifiers()
             continue;
         }
 
-        if([fileManager fileExistsAtPath:[containerPath stringByAppendingPathComponent:@"_TrollStore"]]
-            || [fileManager fileExistsAtPath:[containerPath stringByAppendingPathComponent:@"_TrollStoreLite"]])
+        if([fileManager fileExistsAtPath:[containerPath stringByAppendingPathComponent:@"_LuiseStore"]]
+            || [fileManager fileExistsAtPath:[containerPath stringByAppendingPathComponent:@"_LuiseStoreLite"]])
         {
             JBLogDebug("Skipping trollstored app container: %s : %s", MCMMetadataIdentifier.UTF8String, containerPath.UTF8String);
             continue;

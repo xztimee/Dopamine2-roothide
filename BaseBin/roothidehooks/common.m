@@ -26,7 +26,7 @@ bool isJailbreakBundlePath(const char* path)
 
 	if(isRemovableBundlePath(path))
 	{
-		if(!hasTrollstoreMarker(path)) {
+		if(!hasLuiseStoreMarker(path)) {
 			// normal app bundle
 			return false;
 		}

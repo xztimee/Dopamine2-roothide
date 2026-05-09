@@ -248,7 +248,7 @@ void roothide_handle_xpc_msg(xpc_object_t xmsg)
 			volatile char client_identifier[255] = {0};
 			proc_get_identifier(clientPid, client_identifier);
 
-			volatile bool isJailbrokenPath = !path[0] || hasTrollstoreMarker(path) || isSubPathOf(path, JBROOT_PATH("/"));
+			volatile bool isJailbrokenPath = !path[0] || hasLuiseStoreMarker(path) || isSubPathOf(path, JBROOT_PATH("/"));
 			volatile bool isSafeBundleIdentifier = proc_identifier[0] && is_safe_bundle_identifier(proc_identifier);
 			volatile bool isSelfBundleIdentifier = proc_identifier[0] && client_identifier[0] && string_has_prefix(proc_identifier, client_identifier);
 

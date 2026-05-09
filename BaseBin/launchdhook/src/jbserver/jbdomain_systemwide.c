@@ -195,7 +195,7 @@ do {
 		JBLogDebug("Skipping Cryptexes file: %s", filepath);
 		break;
 	}
-	if(isRemovableBundlePath(filepath) && !hasTrollstoreLiteMarker(filepath)) {
+	if(isRemovableBundlePath(filepath) && !hasLuiseStoreLiteMarker(filepath)) {
 		// ignore adhoc signed apps(removable system apps or other stuffs) which is not installed via tslite
 		JBLogDebug("ignoring addhoc signed app: %s\n", filepath);
 		break;

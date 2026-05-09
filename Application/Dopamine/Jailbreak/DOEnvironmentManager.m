@@ -54,7 +54,7 @@ int reboot3(uint64_t flags, ...);
         if ([self isJailbroken]) {
             gSystemInfo.jailbreakInfo.rootPath = strdup(jbclient_get_jbroot() ?: "");
         }
-        else if ([self isInstalledThroughTrollStore]) {
+        else if ([self isInstalledThroughLuiseStore]) {
             [self locateJailbreakRoot];
         }
     }
@@ -218,15 +218,15 @@ int reboot3(uint64_t flags, ...);
     }
 }
 
-- (BOOL)isInstalledThroughTrollStore
+- (BOOL)isInstalledThroughLuiseStore
 {
-    static BOOL trollstoreInstallation = NO;
+    static BOOL luiseStoreInstallation = NO;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString* trollStoreMarkerPath = [[[NSBundle mainBundle].bundlePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"_TrollStore"];
-        trollstoreInstallation = [[NSFileManager defaultManager] fileExistsAtPath:trollStoreMarkerPath];
+        NSString* luiseStoreMarkerPath = [[[NSBundle mainBundle].bundlePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"_LuiseStore"];
+        luiseStoreInstallation = [[NSFileManager defaultManager] fileExistsAtPath:luiseStoreMarkerPath];
     });
-    return trollstoreInstallation;
+    return luiseStoreInstallation;
 }
 
 - (BOOL)isJailbroken
@@ -267,7 +267,7 @@ int reboot3(uint64_t flags, ...);
 
 - (void)runUnsandboxed:(void (^)(void))unsandboxBlock
 {
-    if ([self isInstalledThroughTrollStore]) {
+    if ([self isInstalledThroughLuiseStore]) {
         unsandboxBlock();
     }
     else if([self isJailbroken]) {
@@ -302,14 +302,14 @@ int reboot3(uint64_t flags, ...);
     if (ur == 0 && orgUser != 0) seteuid(orgUser);
 }
 
-- (int)runTrollStoreAction:(NSString *)action
+- (int)runLuiseStoreAction:(NSString *)action
 {
-    if (![self isInstalledThroughTrollStore]) return -1;
+    if (![self isInstalledThroughLuiseStore]) return -1;
     
     uint32_t selfPathSize = PATH_MAX;
     char selfPath[selfPathSize];
     _NSGetExecutablePath(selfPath, &selfPathSize);
-    return exec_cmd_root(selfPath, "trollstore", action.UTF8String, NULL);
+    return exec_cmd_root(selfPath, "luisestore", action.UTF8String, NULL);
 }
 
 - (void)respring
@@ -546,7 +546,7 @@ int reboot3(uint64_t flags, ...);
 - (void)setJailbreakHidden:(BOOL)hidden
 {
     if (hidden && ![self isJailbroken] && geteuid() != 0) {
-        [self runTrollStoreAction:@"hide-jailbreak"];
+        [self runLuiseStoreAction:@"hide-jailbreak"];
         return;
     }
     
@@ -587,7 +587,7 @@ int reboot3(uint64_t flags, ...);
 
 - (NSString *)accessibleKernelPath
 {
-    if ([self isInstalledThroughTrollStore]) {
+    if ([self isInstalledThroughLuiseStore]) {
         NSString *kernelcachePath = [[self activePrebootPath] stringByAppendingPathComponent:@"System/Library/Caches/com.apple.kernelcaches/kernelcache"];
         if ([[NSFileManager defaultManager] fileExistsAtPath:kernelcachePath]) {
             return kernelcachePath;
@@ -687,7 +687,7 @@ int reboot3(uint64_t flags, ...);
 - (NSError *)deleteBootstrap
 {
     if (![self isJailbroken] && getuid() != 0) {
-        int r = [self runTrollStoreAction:@"delete-bootstrap"];
+        int r = [self runLuiseStoreAction:@"delete-bootstrap"];
         if (r != 0) {
             // TODO: maybe handle error
         }

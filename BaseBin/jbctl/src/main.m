@@ -18,7 +18,7 @@ Available commands:\n\
 	trustcache info\t\t\tPrint info about all jailbreak related trustcaches and the cdhashes contained in them\n\
 	trustcache clear\t\tClears all existing cdhashes from the jailbreaks trustcache\n\
 	trustcache add /path/to/macho\t\tAdd the cdhash of a macho to the jailbreaks trustcache\n\
-	update <tipa/basebin> <path>\tInitiates a jailbreak update either based on a TIPA or based on a basebin.tar file, TIPA installation depends on TrollStore, afterwards it triggers a userspace reboot\n");
+	update <tipa/basebin> <path>\tInitiates a jailbreak update either based on a TIPA or based on a basebin.tar file, TIPA installation depends on LuiseStore, afterwards it triggers a userspace reboot\n");
 }
 
 int main(int argc, char* argv[])
@@ -161,19 +161,19 @@ int main(int argc, char* argv[])
 		if (!strcmp(updateType, "tipa")) {
 			setsid();
 
-			LSApplicationProxy *trollstoreAppProxy = [LSApplicationProxy applicationProxyForIdentifier:@"com.opa334.TrollStore"];
-			if (!trollstoreAppProxy || !trollstoreAppProxy.installed) {
-				printf("Unable to locate TrollStore, doesn't seem like it's installed.\n");
+			LSApplicationProxy *luiseStoreAppProxy = [LSApplicationProxy applicationProxyForIdentifier:@"com.luisepog.luisestore"];
+			if (!luiseStoreAppProxy || !luiseStoreAppProxy.installed) {
+				printf("Unable to locate LuiseStore, doesn't seem like it's installed.\n");
 				return 4;
 			}
-			NSString *trollstorehelperPath = [trollstoreAppProxy.bundleURL.path stringByAppendingPathComponent:@"trollstorehelper"];
-			int r = exec_cmd(trollstorehelperPath.fileSystemRepresentation, "install", "skip-uicache", "force", updateFile, NULL);
+			NSString *luisestorehelperPath = [luiseStoreAppProxy.bundleURL.path stringByAppendingPathComponent:@"trollstorehelper"];
+			int r = exec_cmd(luisestorehelperPath.fileSystemRepresentation, "install", "skip-uicache", "force", updateFile, NULL);
 			if (r != 0) {
-				printf("Failed to install tipa via TrollStore: %d\n", r);
+				printf("Failed to install tipa via LuiseStore: %d\n", r);
 				return 5;
 			}
 
-			LSApplicationProxy *dopamineAppProxy = [LSApplicationProxy applicationProxyForIdentifier:@"com.opa334.Dopamine-roothide"];
+			LSApplicationProxy *dopamineAppProxy = [LSApplicationProxy applicationProxyForIdentifier:@"vn.luisepog"];
 			if (!dopamineAppProxy) {
 				printf("Unable to locate newly installed Dopamine build.\n");
 				return 6;

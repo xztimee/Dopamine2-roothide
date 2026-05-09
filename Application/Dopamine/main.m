@@ -14,7 +14,7 @@
 
 int main(int argc, char * argv[]) {
     if (argc >= 3) {
-        if (!strcmp(argv[1], "trollstore")) {
+        if (!strcmp(argv[1], "luisestore")) {
             if (!strcmp(argv[2], "delete-bootstrap")) {
                 [[DOEnvironmentManager sharedManager] deleteBootstrap];
             }
